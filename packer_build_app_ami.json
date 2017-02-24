@@ -1,0 +1,31 @@
+{
+  "variables": {
+    "aws_access_key": "XXXXXXXXXXX",
+    "aws_secret_key": "XXXXXXXXXXX"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "source_ami": "ami-6d1c2007",
+    "instance_type": "t2.small",
+    "ssh_username": "centos",
+    "ami_virtualization_type": "hvm",
+    "ami_name": "integrichain-spark {{timestamp}}",
+    "vpc_id": "vpc-6bdab00d",
+    "security_group_id": "sg-04663978",
+    "communicator": "ssh",
+    "ssh_pty": true
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "scripts/spark_setup.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/log_analyzer.sh"
+    }
+  ]
+}
